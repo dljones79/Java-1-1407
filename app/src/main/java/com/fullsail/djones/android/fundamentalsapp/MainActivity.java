@@ -2,18 +2,76 @@ package com.fullsail.djones.android.fundamentalsapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import static android.util.Log.*;
+import static com.fullsail.djones.android.fundamentalsapp.R.id.listView;
 
 
 public class MainActivity extends Activity {
+
+    final String TAG = "Fundamentals App";
+    private TextView mEditText;
+    private ListView mListView;
+    private TextView mEntriesText;
+    private TextView mLengthText;
+    private ArrayAdapter arrayAdapter;
+    private ArrayList arrList;
+    private int sizeOfArray;
+    private String sizeString;
+
+    // Create a HashSet to store entered items
+    private HashSet<String> foodSet = new HashSet<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+        mEditText = (TextView) findViewById(R.id.editText);
+        mListView = (ListView) findViewById(listView);
+        mEntriesText = (TextView) findViewById(R.id.entriesText);
+        mLengthText = (TextView) findViewById(R.id.lengthText);
+
+        Button enterButton = (Button) findViewById(R.id.enterbutton);
+        enterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "Button Clicked");
+
+                // Add item entered to set
+                foodSet.add(mEditText.getText().toString());
+
+                // Clear text.
+                mEditText.setText("");
+
+                // convert hashset to array list
+                arrList = new ArrayList<String>(foodSet);
+
+                // Call custom method to populate listview from array
+                popListView(arrList);
+
+                // Get size of array and display to user
+                sizeOfArray = arrList.size();
+                sizeString = "" + sizeOfArray;
+                mEntriesText.setText(sizeString);
+
+                // Call custom method to calculate average length of strings in array
+                calcAverage(arrList);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,4 +91,23 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void popListView(ArrayList currentList){
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, currentList);
+        mListView.setAdapter(arrayAdapter);
+    }
+
+    private void calcAverage(ArrayList currentList){
+        int totalLength = 0;
+        int average = 0;
+        for (Object s : currentList)
+        {
+            totalLength = totalLength + s.toString().length();
+        }
+        average = totalLength/currentList.size();
+        String averageString = "" + average;
+        mLengthText.setText(averageString);
+    }
+
 }
+

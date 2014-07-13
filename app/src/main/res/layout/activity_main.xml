@@ -12,7 +12,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:text="Enter a Food"
+        android:hint="Enter a Food"
         android:layout_above="@+id/enterbutton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
