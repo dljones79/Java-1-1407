@@ -1,3 +1,8 @@
+// David Jones
+// Full Sail University
+// Java 1 1407
+// Fundamentals App
+
 package com.fullsail.djones.android.fundamentalsapp;
 
 import android.app.Activity;
