@@ -1,15 +1,18 @@
 package com.fullsail.djones.android.fundamentalsapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +24,7 @@ import static com.fullsail.djones.android.fundamentalsapp.R.id.listView;
 
 public class MainActivity extends Activity {
 
+    // Declare variables
     final String TAG = "Fundamentals App";
     private TextView mEditText;
     private ListView mListView;
@@ -39,11 +43,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Instantiate variables
         mEditText = (TextView) findViewById(R.id.editText);
         mListView = (ListView) findViewById(listView);
         mEntriesText = (TextView) findViewById(R.id.entriesText);
         mLengthText = (TextView) findViewById(R.id.lengthText);
 
+        // Create onClickListener for "Enter" button
         Button enterButton = (Button) findViewById(R.id.enterbutton);
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +77,23 @@ public class MainActivity extends Activity {
                 calcAverage(arrList);
             }
         });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "List item clicked.");
+                TextView itemSelected = (TextView) view;
+                String selectedString = itemSelected.getText().toString();
+
+                // Instantiate a Toast object
+                Context context = getApplicationContext();
+                CharSequence text = selectedString + " clicked.";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
     }
 
     @Override
@@ -92,11 +115,15 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Custom methods
+
+    // Method to populate listview
     private void popListView(ArrayList currentList){
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, currentList);
         mListView.setAdapter(arrayAdapter);
     }
 
+    // Method to calculate average string length in arraylist
     private void calcAverage(ArrayList currentList){
         int totalLength = 0;
         int average = 0;
