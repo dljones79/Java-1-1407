@@ -4,5 +4,10 @@
     <string name="app_name">Fundamentals App</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="input_hint">Enter A Food</string>
+    <string name="average">Average Length of Entry</string>
+    <string name="num_entries">Number of Entries</string>
+    <string name="button_text">Enter</string>
+    <string name="alert_message"> clicked</string>
 
 </resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Fundamentos App</string>
+    <string name="hello_world">¡Hola Mundo!</string>
+    <string name="action_settings">Configuración</string>
+    <string name="input_hint">Introduzca un alimento</string>
+    <string name="average">Duración media de la entrada</string>
+    <string name="num_entries">Número de entradas</string>
+    <string name="button_text">entrar</string>
+    <string name="alert_message">hecho clic</string>
+
+</resources>

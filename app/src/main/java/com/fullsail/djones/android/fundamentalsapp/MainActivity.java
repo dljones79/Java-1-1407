@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
 
                 // Instantiate a Toast object
                 Context context = getApplicationContext();
-                CharSequence text = selectedString + " clicked.";
+                CharSequence text = selectedString + " " + getText(R.string.alert_message) + ".";
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(context, text, duration);
