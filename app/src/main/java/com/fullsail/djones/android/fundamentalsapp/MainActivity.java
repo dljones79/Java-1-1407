@@ -6,7 +6,9 @@
 package com.fullsail.djones.android.fundamentalsapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,9 +23,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
-import static android.util.Log.*;
 import static com.fullsail.djones.android.fundamentalsapp.R.id.listView;
 
 
@@ -54,6 +54,45 @@ public class MainActivity extends Activity {
         mEntriesText = (TextView) findViewById(R.id.entriesText);
         mLengthText = (TextView) findViewById(R.id.lengthText);
 
+        // Create text view control
+        TextView mEnterTextView = (TextView) findViewById(R.id.enterTextView);
+        mEnterTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "View Clicked.");
+
+                // Add item entered to set
+                foodSet.add(mEditText.getText().toString());
+
+                // Toast when item is added
+                Context context = getApplicationContext();
+                CharSequence text = mEditText.getText().toString() + " " + getText(R.string.saved_message);
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+
+                // Clear text.
+                mEditText.setText("");
+
+                // convert hashset to array list
+                arrList = new ArrayList<String>(foodSet);
+
+                // Call custom method to populate listview from array
+                popListView(arrList);
+
+                // Get size of array and display to user
+                sizeOfArray = arrList.size();
+                sizeString = "" + sizeOfArray;
+                mEntriesText.setText(sizeString);
+
+                // Call custom method to calculate average length of strings in array
+                calcAverage(arrList);
+
+            }
+        });
+
+        /*
         // Create onClickListener for "Enter" button
         Button enterButton = (Button) findViewById(R.id.enterbutton);
         enterButton.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +102,13 @@ public class MainActivity extends Activity {
 
                 // Add item entered to set
                 foodSet.add(mEditText.getText().toString());
+
+                // Toast when item is added
+                Context context = getApplicationContext();
+                CharSequence text = mEditText.getText().toString() + " " + getText(R.string.saved_message);
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
 
                 // Clear text.
                 mEditText.setText("");
@@ -82,6 +128,7 @@ public class MainActivity extends Activity {
                 calcAverage(arrList);
             }
         });
+        */
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -90,6 +137,7 @@ public class MainActivity extends Activity {
                 TextView itemSelected = (TextView) view;
                 String selectedString = itemSelected.getText().toString();
 
+                /*
                 // Instantiate a Toast object
                 Context context = getApplicationContext();
                 CharSequence text = selectedString + " " + getText(R.string.alert_message) + ".";
@@ -97,6 +145,43 @@ public class MainActivity extends Activity {
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
+                */
+
+                // Alert dialog when user selects an item from listview
+                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                alert.setMessage(selectedString + " " + getText(R.string.alert_message));
+                alert.setPositiveButton(R.string.alert_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                alert.show();
+            }
+        });
+
+        // This listener is used to delete items from listview.
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG, "Long Click.");
+                TextView itemSelected = (TextView) view;
+                String selectedString = itemSelected.getText().toString();
+
+                // Remove item from data container and update adapter
+                Object toRemove = arrayAdapter.getItem(i);
+                arrayAdapter.remove(toRemove);
+                arrayAdapter.notifyDataSetChanged();
+
+                // Instantiate Toast object
+                Context context = getApplicationContext();
+                CharSequence text = selectedString + " " + getText(R.string.delete_message);
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+                return false;
             }
         });
     }
@@ -131,7 +216,7 @@ public class MainActivity extends Activity {
     // Method to calculate average string length in arraylist
     private void calcAverage(ArrayList currentList){
         int totalLength = 0;
-        int average = 0;
+        int average;
         for (Object s : currentList)
         {
             totalLength = totalLength + s.toString().length();
@@ -140,6 +225,5 @@ public class MainActivity extends Activity {
         String averageString = "" + average;
         mLengthText.setText(averageString);
     }
-
 }
 

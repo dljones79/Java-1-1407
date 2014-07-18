@@ -8,6 +8,10 @@
     <string name="average">Duración media de la entrada</string>
     <string name="num_entries">Número de entradas</string>
     <string name="button_text">entrar</string>
-    <string name="alert_message">hecho clic</string>
+    <string name="alert_message">hecho clic.</string>
+    <string name="saved_message">añadido.</string>
+    <string name="delete_message">suprimido.</string>
+    <string name="text_view_button">ENTRAR</string>
+    <string name="alert_button">Despedir</string>
 
 </resources>
