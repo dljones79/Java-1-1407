@@ -70,7 +70,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter"
+        android:text="@string/button_text"
         android:textAlignment="center"
         android:textSize="25dp"
         android:textAllCaps="true"

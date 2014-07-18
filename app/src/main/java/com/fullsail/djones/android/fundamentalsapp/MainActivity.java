@@ -178,6 +178,14 @@ public class MainActivity extends Activity {
                 CharSequence text = selectedString + " " + getText(R.string.delete_message);
                 int duration = Toast.LENGTH_SHORT;
 
+                // Get size of array and display to user
+                sizeOfArray = arrList.size();
+                sizeString = "" + sizeOfArray;
+                mEntriesText.setText(sizeString);
+
+                // Call custom method to calculate average length of strings in array
+                calcAverage(arrList);
+
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
 

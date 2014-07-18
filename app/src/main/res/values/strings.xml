@@ -9,6 +9,7 @@
     <string name="num_entries">Number of Entries</string>
     <string name="alert_message">clicked.</string>
     <string name="saved_message">added.</string>
+    <string name="button_text">Enter</string>
     <string name="delete_message">deleted.</string>
     <string name="text_view_button">ENTER</string>
     <string name="alert_button">Dismiss</string>
