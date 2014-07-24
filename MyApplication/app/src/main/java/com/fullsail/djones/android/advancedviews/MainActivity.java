@@ -1,19 +1,25 @@
 package com.fullsail.djones.android.advancedviews;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Spinner;
 
 
 public class MainActivity extends Activity {
+    ListView mListView;
+    Spinner mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mListView = (ListView) findViewById(R.id.listView);
+        mSpinner = (Spinner) findViewById(R.id.spinner);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

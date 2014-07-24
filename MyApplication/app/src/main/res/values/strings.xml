@@ -4,4 +4,13 @@
     <string name="app_name">Advanced Views</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="vehicles">
+        <item>Challenger</item>
+        <item>Camero</item>
+        <item>Viper</item>
+        <item>Supra</item>
+        <item>370Z</item>
+        <item>911</item>
+    </string-array>
+
 </resources>
