@@ -8,26 +8,31 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <Spinner
-        android:layout_width="wrap_content"
+    <ListView
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner" />
+        android:id="@+id/listView"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/spinner"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/listView"
+        android:layout_toEndOf="@+id/listView">
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/imageView"
+            android:layout_marginLeft="27dp"
+            android:layout_marginTop="28dp"
+            android:background="#ffa5ff98"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="34dp"
-            android:background="#ff97ff8e" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,10 +40,22 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Brand:"
             android:id="@+id/brandLabel"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imageView"
-            android:layout_toStartOf="@+id/imageView"
-            android:layout_marginRight="31dp" />
+            android:width="75dp"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginLeft="28dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/brandText"
+            android:layout_alignTop="@+id/brandLabel"
+            android:layout_toRightOf="@+id/brandLabel"
+            android:layout_toEndOf="@+id/brandLabel"
+            android:width="200dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +63,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Model:"
             android:id="@+id/modelLabel"
-            android:layout_toStartOf="@+id/imageView"
+            android:width="75dp"
+            android:layout_toEndOf="@+id/imageView"
             android:layout_below="@+id/brandLabel"
             android:layout_alignLeft="@+id/brandLabel"
             android:layout_alignStart="@+id/brandLabel" />
@@ -55,9 +73,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/modelText"
+            android:layout_toEndOf="@+id/modelLabel"
+            android:width="200dp"
+            android:layout_below="@+id/brandText"
+            android:layout_toRightOf="@+id/modelLabel" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Price:"
             android:id="@+id/priceLabel"
-            android:layout_toStartOf="@+id/imageView"
+            android:width="75dp"
+            android:layout_toEndOf="@+id/imageView"
             android:layout_below="@+id/modelLabel"
             android:layout_alignLeft="@+id/modelLabel"
             android:layout_alignStart="@+id/modelLabel" />
@@ -67,35 +97,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
-            android:id="@+id/brandText"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_above="@+id/modelLabel"
-            android:layout_alignLeft="@+id/imageView"
-            android:layout_alignStart="@+id/imageView"
-            android:layout_marginLeft="60dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/modelText"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_below="@+id/brandText"
-            android:layout_alignLeft="@+id/brandText"
-            android:layout_alignStart="@+id/brandText" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
             android:id="@+id/priceText"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_below="@+id/modelText"
-            android:layout_alignLeft="@+id/modelText"
-            android:layout_alignStart="@+id/modelText" />
-
+            android:layout_toEndOf="@+id/modelLabel"
+            android:width="200dp"
+            android:layout_below="@+id/modelLabel"
+            android:layout_toRightOf="@+id/modelLabel" />
     </RelativeLayout>
 
 </RelativeLayout>
