@@ -1,12 +1,16 @@
+/**
+ * Created by David on 7/31/14.
+ * Connected App
+ * Java 1 - 1407
+ * Full Sail University
+ */
+
 package com.fullsail.djones.android.connectedapp;
 
 import android.content.Context;
 import android.net.NetworkInfo;
 import android.net.ConnectivityManager;
 
-/**
- * Created by David on 7/31/14.
- */
 public class ConnectionDetection {
     private Context context;
 
@@ -14,6 +18,19 @@ public class ConnectionDetection {
         this.context = context;
     }
 
+
+    public boolean connected() {
+        ConnectivityManager connectionStatus = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectionStatus.getActiveNetworkInfo();
+
+        if (info != null){
+            if (info.isConnected()){
+                return true;
+            }
+        } return false;
+    }
+
+    /*
     public boolean connected(){
         ConnectivityManager connectionStatus = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectionStatus != null){
@@ -25,5 +42,6 @@ public class ConnectionDetection {
                     }
         }return false;
     }
+    */
 
 }

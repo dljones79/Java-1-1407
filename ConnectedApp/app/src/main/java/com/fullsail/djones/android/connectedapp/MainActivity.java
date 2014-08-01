@@ -10,7 +10,6 @@ package com.fullsail.djones.android.connectedapp;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -25,13 +24,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
 import java.net.URLConnection;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class MainActivity extends Activity {
 
@@ -39,41 +39,56 @@ public class MainActivity extends Activity {
     Boolean isConnected = false;    // This is to test connection
     ConnectionDetection detector;   // ConnectionDetection Class
 
+    @InjectView(R.id.enterButton) Button enterButton;
+
+    @OnClick(R.id.enterButton) void pullData(){
+        // Create a connection detector
+        detector = new ConnectionDetection(getApplicationContext());
+
+        // Check network status
+        isConnected = detector.connected();
+
+        Log.i(TAG, isConnected.toString());
+
+        if (isConnected.booleanValue() == true) {
+
+            EditText characterName = (EditText) findViewById(R.id.editText);
+            String name = characterName.getText().toString();
+            try {
+                // Set up url string for API request
+                String baseURL = "http://census.soe.com/get/eq2/character/?name.first_lower=";
+                URL queryURL = new URL(baseURL + name + "&c:show=name,type,locationdata,guild");
+                Log.i(TAG, queryURL.toString());
+                new GetCharacterData().execute(queryURL);
+            } catch (Exception e) {
+                Log.e(TAG, "Name not found." + name);
+            }
+            // Clear text and show hint again.
+            characterName.setText("");
+        } else if (isConnected.booleanValue() == false) {
+            Log.i(TAG, "No Connection");
+            new AlertDialog.Builder(this)
+                    .setTitle("No Connection!")
+                    .setMessage("No Data Connection!")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } // End else
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create a connection detector
-        detector = new ConnectionDetection(getApplicationContext());
+        // Inject ButterKnife Library
+        ButterKnife.inject(this);
 
-        Button enterButton = (Button) findViewById(R.id.enterButton);
-        enterButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-
-                // Check network status
-                isConnected = detector.connected();
-
-                if (isConnected) {
-
-                    EditText characterName = (EditText) findViewById(R.id.editText);
-                    String name = characterName.getText().toString();
-                    try {
-                        String baseURL = "http://census.soe.com/get/eq2/character/?name.first_lower=";
-                        URL queryURL = new URL(baseURL + name + "&c:show=name,type,locationdata,guild");
-                        Log.i(TAG, queryURL.toString());
-                        new GetCharacterData().execute(queryURL);
-                    } catch (Exception e) {
-                        Log.e(TAG, "Name not found." + name);
-                    }
-                    characterName.setText("");
-                } else {
-                    Log.i(TAG, "No Connection");
-                } // End else
-            } // End onClick
-        }); // End setOnClickListener
     } // End onCreate
 
 
@@ -103,6 +118,7 @@ public class MainActivity extends Activity {
 
         protected void onPreExecute()
         {
+            // Show progress indicator while pulling and parsing JSON Data
             ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(View.VISIBLE);
         }
 

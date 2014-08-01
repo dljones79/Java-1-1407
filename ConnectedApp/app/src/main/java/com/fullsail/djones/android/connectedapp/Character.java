@@ -1,12 +1,16 @@
+/**
+ * Created by David Jones on 7/30/14.
+ * Connected App
+ * Java 1 - 1407
+ * Full Sail University
+ */
+
 package com.fullsail.djones.android.connectedapp;
 
 import android.util.Log;
 
 import org.json.JSONObject;
 
-/**
- * Created by David Jones on 7/30/14.
- */
 public class Character {
 
     final String TAG = "Character Class";
