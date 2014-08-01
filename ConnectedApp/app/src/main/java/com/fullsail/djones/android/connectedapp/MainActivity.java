@@ -7,8 +7,13 @@ Connected App Assignment
 
 package com.fullsail.djones.android.connectedapp;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,9 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -29,30 +36,45 @@ import butterknife.InjectView;
 public class MainActivity extends Activity {
 
     final String TAG = "Connected App";
+    Boolean isConnected = false;    // This is to test connection
+    ConnectionDetection detector;   // ConnectionDetection Class
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Create a connection detector
+        detector = new ConnectionDetection(getApplicationContext());
+
         Button enterButton = (Button) findViewById(R.id.enterButton);
         enterButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
-                EditText characterName = (EditText) findViewById(R.id.editText);
-                String name = characterName.getText().toString();
-                try {
-                    String baseURL = "http://census.soe.com/get/eq2/character/?name.first_lower=";
-                    URL queryURL = new URL(baseURL + name);
-                    Log.i(TAG, queryURL.toString());
-                    new GetCharacterData().execute(queryURL);
-                } catch (Exception e) {
-                    Log.e(TAG, "Name not found." + name);
-                }
-            }
-        });
-    }
+
+                // Check network status
+                isConnected = detector.connected();
+
+                if (isConnected) {
+
+                    EditText characterName = (EditText) findViewById(R.id.editText);
+                    String name = characterName.getText().toString();
+                    try {
+                        String baseURL = "http://census.soe.com/get/eq2/character/?name.first_lower=";
+                        URL queryURL = new URL(baseURL + name + "&c:show=name,type,locationdata,guild");
+                        Log.i(TAG, queryURL.toString());
+                        new GetCharacterData().execute(queryURL);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Name not found." + name);
+                    }
+                    characterName.setText("");
+                } else {
+                    Log.i(TAG, "No Connection");
+                } // End else
+            } // End onClick
+        }); // End setOnClickListener
+    } // End onCreate
 
 
     @Override
@@ -60,7 +82,7 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
+    } // End of onCreateOptionsMenu
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -72,13 +94,19 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    } // End of onOptionsItemSelected
 
     // Async Task Class
     private class GetCharacterData extends AsyncTask<URL, Integer, JSONObject> {
 
         final String TAG = "Connected App Async Task";
 
+        protected void onPreExecute()
+        {
+            ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(View.VISIBLE);
+        }
+
+        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         protected JSONObject doInBackground(URL... urls) {
 
@@ -103,28 +131,30 @@ public class MainActivity extends Activity {
 
             try {
                 apiData = new JSONObject(jsonString);
-                Log.i(TAG, "API Data: " + apiData.toString());
-            } catch (Exception e){
-                Log.e(TAG, "Failure to convert data.");
+                Log.i(TAG, apiData.toString());
+            } catch (Exception e) {
+                Log.e(TAG, "Can't convert API Response to JSON");
                 apiData = null;
             }
 
             try {
-                apiData = (apiData != null) ? apiData.getJSONObject("character_list") : null;
-                Log.i(TAG, "Received API Data: " + apiData.toString());
+                apiData = (apiData != null) ? apiData.getJSONArray("character_list").getJSONObject(0) : null;
+                Log.i(TAG, "Character ID: " + apiData.toString());
             } catch (Exception e){
-                Log.e(TAG, "Could not parse data." + apiData.toString());
-                apiData = null;
+                Log.e(TAG, "Failure to parse data.");
             }
 
             return apiData;
-        }
+        } // End of doInBackground
 
         protected void onPostExecute(JSONObject apiData) {
             Character displayCharacter = new Character(apiData);
             refreshUI(displayCharacter);
-        }
-    }
+            ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(View.INVISIBLE);
+        } // End of onPostExecute
+
+
+    } // End of GetCharacterData
 
     // Custom Method to Display Data
     private void refreshUI(Character character){
@@ -132,10 +162,9 @@ public class MainActivity extends Activity {
         ((TextView) findViewById(R.id.charLevel)).setText(character.getLevel());
         ((TextView) findViewById(R.id.charClass)).setText(character.getCharClass());
         ((TextView) findViewById(R.id.charServer)).setText(character.getServer());
-        ((TextView) findViewById(R.id.charAAS)).setText(character.getAAS());
-    }
-
-}
+        //((TextView) findViewById(R.id.charAAS)).setText(character.getAAS());
+    } // End of refreshUI
+} // End of MainActivity
 
 
 

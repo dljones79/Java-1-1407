@@ -33,7 +33,7 @@ public class Character {
             mCharClass = characterData.getJSONObject("type").getString("class");
             mLevel = characterData.getJSONObject("type").getString("level");
             mServer = characterData.getJSONObject("locationdata").getString("world");
-            mAAS = characterData.getJSONObject("alternateadvancements").getString("availablepoints");
+            //mAAS = characterData.getJSONObject("alternateadvancements").getString("availablepoints");
         } catch (Exception e){
             Log.e(TAG, "Failure");
         }
